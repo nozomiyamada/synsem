@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+<br>
+<div class="container" id="container_testpage">
+
+	<!-- START BUTTON -->
+	<div class="row" v-show="show_start_button">
+		<div class="col-md-12 mt-2">
+			
+			<button class="btn btn-primary mb-2 center-block" style="width: 80%; height:60px; font-size: 1.3em;" v-on:click="show_start_button=false;">
+				START TEST
+			</button>
+		</div>
+	</div>
+
+	<!-- TEST FORM -->
+	<div class="row" v-show="show_test_form">
+		<div class="col-md-12 mt-2">
+			
+			<button class="btn btn-primary mb-2 center-block" style="width: 80%; height:60px; font-size: 1.3em;" v-on:click="show_start_button=false;">
+				START TEST
+			</button>
+		</div>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+
+var vue = new Vue({
+	el: '#container_testpage',
+	data: {
+		show_start_button: true
+	},
+	method: {
+
+	}
+})
+
+</script>
+
+{% endblock %}

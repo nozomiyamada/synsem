@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta property="og:url" content="https://synsem.herokuapp.com/" />
+	<meta property="og:title" content="Test Page" />
+	<meta property="og:description" content="Test Page" />
+
+	<title>Test Page</title>
+	<link rel="shortcut icon" href="static/favicon.ico" type="image/x-icon">
+	<link rel="apple-touch-icon" href="static/favicon.ico">
+	<link href="https://fonts.googleapis.com/css?family=Sarabun&display=swap" rel="stylesheet"> <!-- Thai font -->
+	<link rel="stylesheet" type="text/css" href="static/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="static/custom.css">
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6/dist/vue.js"></script>
+	<script>
+		// check media type
+		var ua = navigator.userAgent;
+		if(ua.indexOf("iPhone") > 0 || ua.indexOf("Android") > 0 && ua.indexOf("Mobile") > 0){
+			var MEDIA = "mobile";
+		}else if (ua.indexOf("iPad") > 0 || ua.indexOf("Android") > 0) {
+			var MEDIA = "tablet";
+		}else{
+			var MEDIA = "PC";
+		} 
+	</script>
+</head>
+
+<body>
+
+<header class="sticky-top">
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#fecccc ;padding: 10px 1em 10px 2em;">
+    <a class="navbar-brand" href="/" data-placement="bottom" title="Top Page">Test Page</a>
+    &copy; 2022&nbsp;<a href="https://nozomiyamada.github.io/index.html" target="_blank">Nozomi Yamada</a>&nbsp;All Rights Reserved.
+  </nav>
+</header>
+
+<section>
+{% block content %}
+
+  <!-- contents of each page -->
+
+{% endblock %}
+</section>
+
+
+
+<script type="text/javascript" src="static/Chart.bundle.min.js"></script> <!-- Chart.js -->
+<script type="text/javascript" src="static/bootstrap.bundle.min.js"></script>
+<script type="text/javascript">
+  ///// plugins for chart js/////
+  Chart.plugins.register({
+    afterDatasetsDraw: function (chart, easing) {
+      // To only draw at the end of animation, check for easing === 1
+      var ctx = chart.ctx;
+      chart.data.datasets.forEach(function (dataset, i) {
+        var meta = chart.getDatasetMeta(i);
+        if (!meta.hidden) {
+          meta.data.forEach(function (element, index) {
+            // Draw the text in black, with the specified font
+            ctx.fillStyle = 'rgb(0, 0, 0)';
+            var fontSize = 12;
+            var fontStyle = 'normal';
+            var fontFamily = 'Sarabun';
+            ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
+            // Just naively convert to string for now
+            var dataString = dataset.data[index].toString();
+            // Make sure alignment settings are correct
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            var padding = 5;
+            var position = element.tooltipPosition();
+            ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
+          });
+        }
+      });
+    }
+  });
+  $('body [data-toggle="popover"]').popover();
+  $('body [data-toggle="tooltip"]').tooltip({html:true});
+</script>
+
+</body>
+</html>
