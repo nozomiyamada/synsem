@@ -3,42 +3,163 @@
 
 
 <br>
-<div class="container" id="container_testpage">
-
-	<!-- START BUTTON -->
-	<div class="row" v-show="show_start_button">
-		<div class="col-md-12 mt-2">
-			
-			<button class="btn btn-primary mb-2 center-block" style="width: 80%; height:60px; font-size: 1.3em;" v-on:click="show_start_button=false;">
+<main role="main" id="container_testpage">
+	<section class="text-center">
+		
+		<!-- INSTRUCTION -->
+		<div class="container mb-4">
+			<h2>Instructions</h2>
+			<p class="text-muted">
+				1. กด START TEST<br>
+				2. ใส่ข้อมูล: ชื่อ อายุ เพศ<br>
+				3. ประโยคภาษาไทยจะแสดงด้านล่าง<br>
+				4. ให้เลือก "natural" or "unnatural"<br> 
+				5. มีทั้งหมด 30 ข้อ
+			</p>
+			<!-- START BUTTON -->
+			<button class="btn btn-primary mb-2" style="width: 80%; height:60px; font-size: 1.3em;" v-show="show_start_button" data-toggle="modal" data-target="#modal_input">
 				START TEST
 			</button>
-		</div>
-	</div>
 
-	<!-- TEST FORM -->
-	<div class="row" v-show="show_test_form">
-		<div class="col-md-12 mt-2">
-			
-			<button class="btn btn-primary mb-2 center-block" style="width: 80%; height:60px; font-size: 1.3em;" v-on:click="show_start_button=false;">
-				START TEST
-			</button>
+			<!-- INPUT FORM : MODAL -->
+      <div class="modal fade" id="modal_input" tabindex="-1" role="dialog" aria-labelledby="label1" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">
+                <span>Please Fill Your Information</span>
+              </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+							<div class="input-group mb-2">
+								<div class="input-group-prepend">
+									<span class="input-group-text">ชื่อ</span>
+								</div>
+								<input type="text" class="form-control" v-model="username" required>
+							</div>
+							<div class="input-group mb-2">
+								<div class="input-group-prepend">
+									<span class="input-group-text">อายุ</span>
+								</div>
+								<select class="form-control" v-model="age" required>
+									<option value="">- เลือก -</option>
+									<option value="under20"> - 20</option>
+									<option value="20">20 - 29</option>
+									<option value="30">30 - 39</option>
+									<option value="40">40 - 49</option>
+									<option value="50">50 - 59</option>
+									<option value="over60">60 - </option>
+								</select>
+							</div>
+							<div class="input-group mb-2">
+								<div class="input-group-prepend">
+									<span class="input-group-text">เพศ</span>
+								</div>
+								<select class="form-control" v-model="gender" required>
+									<option value="">- เลือก -</option>
+									<option>เพศหญิง</option>
+									<option>เพศชาย</option>
+									<option>อื่นๆ</option>
+									<option>ไม่ระบุ</option>
+								</select>
+							</div>
+            </div>
+						<div class="modal-footer">
+							<button class="btn btn-danger" style="width: 100%;" onclick="start_test();">
+								SUBMIT and START
+							</button>
+						</div>
+          </div>
+        </div>
+      </div>
 		</div>
-	</div>
 
-</div>
+		<!-- TEST FORM -->
+		<div class="container" v-show="show_testform">
+			<div class="card">
+				<div class="card-header">
+					<h4>ประโยคที่ {{stimulus_no}}</h4>
+				</div>
+				<div class="card-body">
+					<h2>{{stimuli[stimulus_no-1]}}</h2>
+				</div>
+				<div class="card-footer">
+					<button class="btn btn-primary my-2 mx-4" style="font-size: 2em;" onclick="push_answer(true);">ธรรมชาติ</button>
+					<button class="btn btn-danger my-2 mx-4" style="font-size: 2em;" onclick="push_answer(false);">ไม่ธรรมชาติ</button>
+				</div>
+			</div>
+		</div>
+
+	</section>
+</main>
 
 <script type="text/javascript">
 
-var vue = new Vue({
-	el: '#container_testpage',
-	data: {
-		show_start_button: true
-	},
-	method: {
+	var vue = new Vue({
+		el: '#container_testpage',
+		data: {
+			show_start_button: true,
+			show_testform: false,
+			stimulus_no: 1,
+			stimuli: (( stimuli | tojson )), // from Flask
+			username: '',
+			age: '',
+			gender: '',
+			answers: []
+		},
+		method: {
 
+		}
+	})
+
+	function start_test(){
+		// validate form
+		if(vue.username==''|vue.age==''|vue.gender==''){
+			window.alert("ข้อมูลไม่ครบ");
+		}
+		else{
+			$('#modal_input').modal('hide');
+			vue.show_start_button = false;
+			vue.show_testform = true;
+		}
 	}
-})
 
+	function push_answer(value){	
+		if(vue.stimulus_no == vue.stimuli.length){
+			send_ajax();
+		}else{
+			vue.stimulus_no += 1;
+			vue.answers.push(value);
+		}
+	}
+
+	function send_ajax(){
+		// make POST parameters
+		var data_to_send = {
+				"name": vue.username,
+				"age": vue.age,
+				"gender": vue.gender,
+				"stimuli": vue.stimuli,
+				"answers": vue.answers
+			};
+		// send AJAX
+		$.ajax({
+			data : data_to_send,
+			type: "POST",
+			dataType: "json",
+			cache: false,
+			timeout: 5000,
+			url : "/"
+		}).done(function(returnData){
+			window.alert("จบแล้วครับ ขอบคุณมากครับ");
+			location.reload();
+		}).fail(function(){ // when fail to connect 
+			location.reload();
+		});
+	}
 </script>
 
 {% endblock %}
