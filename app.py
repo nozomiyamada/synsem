@@ -14,7 +14,7 @@ app = CustomFlask(__name__)
 
 STIMULI = pd.read_csv('data/stimuli_original.csv') ## id, sentence
 FILLERS = pd.read_csv('data/fillers.csv') ## id, filler
-RESULTS = pd.read_csv('data/result.csv') ## date, name, age, gender, stimulus, is_filler, naturality
+RESULTS = pd.read_csv('static/result2.csv') ## date, name, age, gender, stimulus, is_filler, naturality
 
 ###########################################################
 
@@ -31,18 +31,24 @@ def top_page():
     elif request.method == 'POST':
         ### record result
         now = str(datetime.datetime.today()).split('.')[0]
-        name = request.form['name']
+        id_ = request.form['id']
         age = request.form['age']
         gender = request.form['gender']
         stimuli = request.form.getlist('stimuli[]')
         answers = request.form.getlist('answers[]')
         ## RESULTS : date,name,age,gender,stimulus,naturality,is_stimulus
         for sti, ans in zip(stimuli, answers):
-            is_stimulus = sti in STIMULI.sentence
-            RESULTS.loc[len(RESULTS)] = [now, name, age, gender, sti, ans, is_stimulus]
-        RESULTS.to_csv('data/result2.csv', index=False)
+            is_stimulus = sti in STIMULI.sentence.values
+            RESULTS.loc[len(RESULTS)] = [now, id_, age, gender, sti, ans, is_stimulus]
+        RESULTS.to_csv('static/result2.csv', index=False)
+        RESULTS.to_json('static/result.json', orient='records')
 
         return jsonify({'status':'success'})
+
+@app.route("/admin", methods=['GET', 'POST'])
+def admin_page():
+    return render_template('adminpage.html', result=RESULTS.values.tolist())
+
 
 ###########################################################
 

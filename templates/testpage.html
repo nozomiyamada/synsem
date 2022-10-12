@@ -13,8 +13,8 @@
 				1. กด START TEST<br>
 				2. ใส่ข้อมูล: ชื่อ อายุ เพศ<br>
 				3. ประโยคภาษาไทยจะแสดงด้านล่าง<br>
-				4. ให้เลือก "natural" or "unnatural"<br> 
-				5. มีทั้งหมด 30 ข้อ
+				4. ให้เลือกความธรรมชาติ (1-5) ของประโยคนั้น <br> 
+				5. มีทั้งหมด 10 ข้อ
 			</p>
 			<!-- START BUTTON -->
 			<button class="btn btn-primary mb-2" style="width: 80%; height:60px; font-size: 1.3em;" v-show="show_start_button" data-toggle="modal" data-target="#modal_input">
@@ -27,7 +27,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">
-                <span>Please Fill Your Information</span>
+                <span>Please fill your information</span>
               </h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -36,9 +36,9 @@
             <div class="modal-body">
 							<div class="input-group mb-2">
 								<div class="input-group-prepend">
-									<span class="input-group-text">ชื่อ</span>
+									<span class="input-group-text">รหัส</span>
 								</div>
-								<input type="text" class="form-control" v-model="username" required>
+								<input type="text" class="form-control" v-model="id" required>
 							</div>
 							<div class="input-group mb-2">
 								<div class="input-group-prepend">
@@ -66,10 +66,14 @@
 									<option>ไม่ระบุ</option>
 								</select>
 							</div>
+							<p>
+								***consent form***<br>
+								<br>
+							</p>
             </div>
 						<div class="modal-footer">
 							<button class="btn btn-danger" style="width: 100%;" onclick="start_test();">
-								SUBMIT and START
+								CONFIRM and START
 							</button>
 						</div>
           </div>
@@ -87,8 +91,29 @@
 					<h2>{{stimuli[stimulus_no-1]}}</h2>
 				</div>
 				<div class="card-footer">
-					<button class="btn btn-primary my-2 mx-4" style="font-size: 2em;" onclick="push_answer(true);">ธรรมชาติ</button>
-					<button class="btn btn-danger my-2 mx-4" style="font-size: 2em;" onclick="push_answer(false);">ไม่ธรรมชาติ</button>
+					ไม่ธรรมชาติ
+					<div class="form-check form-check-inline ml-2">
+						<input class="form-check-input" type="radio" name="naturarity" v-model="naturality" value="1">
+						<label class="form-check-label" for="inlineRadio1">1</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="radio" name="naturality" v-model="naturality" value="2">
+						<label class="form-check-label" for="inlineRadio2">2</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="radio" name="naturarity" v-model="naturality" value="3">
+						<label class="form-check-label" for="inlineRadio2">3</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="radio" name="naturarity" v-model="naturality" value="4">
+						<label class="form-check-label" for="inlineRadio2">4</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="radio" name="naturarity" v-model="naturality" value="5">
+						<label class="form-check-label" for="inlineRadio2">5</label>
+					</div>
+					ธรรมชาติ
+					<button class="btn btn-primary my-2 mx-4" style="font-size: 1.3em;" onclick="push_answer();">Next</button>
 				</div>
 			</div>
 		</div>
@@ -105,9 +130,10 @@
 			show_testform: false,
 			stimulus_no: 1,
 			stimuli: (( stimuli | tojson )), // from Flask
-			username: '',
+			id: '',
 			age: '',
 			gender: '',
+			naturality: '',
 			answers: []
 		},
 		method: {
@@ -117,7 +143,7 @@
 
 	function start_test(){
 		// validate form
-		if(vue.username==''|vue.age==''|vue.gender==''){
+		if(vue.id==''|vue.age==''|vue.gender==''){
 			window.alert("ข้อมูลไม่ครบ");
 		}
 		else{
@@ -132,14 +158,15 @@
 			send_ajax();
 		}else{
 			vue.stimulus_no += 1;
-			vue.answers.push(value);
+			vue.answers.push(vue.naturality);
+			vue.naturality = '';
 		}
 	}
 
 	function send_ajax(){
 		// make POST parameters
 		var data_to_send = {
-				"name": vue.username,
+				"id": vue.id,
 				"age": vue.age,
 				"gender": vue.gender,
 				"stimuli": vue.stimuli,

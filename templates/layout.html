@@ -13,7 +13,13 @@
 	<link href="https://fonts.googleapis.com/css?family=Sarabun&display=swap" rel="stylesheet"> <!-- Thai font -->
 	<link rel="stylesheet" type="text/css" href="static/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="static/custom.css">
+  <link href="https://unpkg.com/bootstrap-table@1.21.0/dist/bootstrap-table.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/bootstrap-table@1.21.0/dist/bootstrap-table.min.js"></script>
+  <script src="https://unpkg.com/bootstrap-table@1.21.0/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script> <!-- table filter plugin -->
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.6/dist/vue.js"></script>
+  <script type="text/javascript" src="static/jquery-3.5.1.js"></script> <!-- jQuery -->
+  <script type="text/javascript" src="static/Chart.bundle.min.js"></script> <!-- Chart.js -->
+  <script type="text/javascript" src="static/bootstrap.bundle.min.js"></script>
 	<script>
 		// check media type
 		var ua = navigator.userAgent;
@@ -47,9 +53,7 @@
 </section>
 
 
-<script type="text/javascript" src="static/jquery-3.5.1.js"></script> <!-- jQuery -->
-<script type="text/javascript" src="static/Chart.bundle.min.js"></script> <!-- Chart.js -->
-<script type="text/javascript" src="static/bootstrap.bundle.min.js"></script>
+
 <script type="text/javascript">
   ///// plugins for chart js/////
   Chart.plugins.register({
