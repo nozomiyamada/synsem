@@ -20,13 +20,14 @@
 			<table id="table" class="table table-hover mt-2">
 				<thead class="thead-dark">
 					<tr class="">
-						<th data-field="date">date</th>
-						<th data-field="id">ID</th>
-						<th data-field="age">age</th>
-						<th data-field="gender">gender</th>
-						<th data-field="stimulus">stimulus</th>
-						<th data-field="naturarity">naturality</th>
-						<th data-field="is_stimulus" data-filter-control="select">is_stimulus</th>
+						<th>date</th>
+						<th>ID</th>
+						<th>age</th>
+						<th>gender</th>
+						<th>stimulus</th>
+						<th>naturality</th>
+						<th>is_stimulus</th>
+						<th>reaction time[s]</th>
 					</tr>
 				</thead>
 				
@@ -38,6 +39,7 @@
 					<th>{{row[4]}}</th>
 					<th>{{row[5]}}</th>
 					<th>{{row[6]}}</th>
+					<th>{{row[7]}}</th>
 				</tr>
 
 				<tr v-for="row in result" v-if="show_only_stimuli==false">
@@ -48,6 +50,7 @@
 					<th>{{row[4]}}</th>
 					<th>{{row[5]}}</th>
 					<th>{{row[6]}}</th>
+					<th>{{row[7]}}</th>
 				</tr>
 				
 			</table>

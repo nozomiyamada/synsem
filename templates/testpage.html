@@ -13,7 +13,7 @@
 				1. กด START TEST<br>
 				2. ใส่ข้อมูล: ชื่อ อายุ เพศ<br>
 				3. ประโยคภาษาไทยจะแสดงด้านล่าง<br>
-				4. ให้เลือกความธรรมชาติ (1-5) ของประโยคนั้น <br> 
+				4. ให้เลือกความธรรมชาติ (1-7) ของประโยคนั้น <br> 
 				5. มีทั้งหมด 10 ข้อ
 			</p>
 			<!-- START BUTTON -->
@@ -22,18 +22,18 @@
 			</button>
 
 			<!-- INPUT FORM : MODAL -->
-      <div class="modal fade" id="modal_input" tabindex="-1" role="dialog" aria-labelledby="label1" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">
-                <span>Please fill your information</span>
-              </h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
+			<div class="modal fade" id="modal_input" tabindex="-1" role="dialog" aria-labelledby="label1" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">
+								<span>Please fill your information</span>
+							</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
 							<div class="input-group mb-2">
 								<div class="input-group-prepend">
 									<span class="input-group-text">รหัส</span>
@@ -70,15 +70,15 @@
 								***consent form***<br>
 								<br>
 							</p>
-            </div>
+						</div>
 						<div class="modal-footer">
 							<button class="btn btn-danger" style="width: 100%;" onclick="start_test();">
 								CONFIRM and START
 							</button>
 						</div>
-          </div>
-        </div>
-      </div>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<!-- TEST FORM -->
@@ -91,29 +91,37 @@
 					<h2>{{stimuli[stimulus_no-1]}}</h2>
 				</div>
 				<div class="card-footer">
-					ไม่ธรรมชาติ
+					<span class="badge badge-danger" style="font-size: 1.2em;">ไม่ธรรมชาติ</span>
 					<div class="form-check form-check-inline ml-2">
-						<input class="form-check-input" type="radio" name="naturarity" v-model="naturality" value="1">
-						<label class="form-check-label" for="inlineRadio1">1</label>
+						<input class="form-check-input" type="radio" name="naturarity" id="radio1" v-model="naturality" value="1">
+						<label class="form-check-label" for="radio1">1</label>
 					</div>
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="naturality" v-model="naturality" value="2">
-						<label class="form-check-label" for="inlineRadio2">2</label>
+						<input class="form-check-input" type="radio" name="naturality" id="radio2" v-model="naturality" value="2">
+						<label class="form-check-label" for="radio2">2</label>
 					</div>
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="naturarity" v-model="naturality" value="3">
-						<label class="form-check-label" for="inlineRadio2">3</label>
+						<input class="form-check-input" type="radio" name="naturarity" id="radio3" v-model="naturality" value="3">
+						<label class="form-check-label" for="radio3">3</label>
 					</div>
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="naturarity" v-model="naturality" value="4">
-						<label class="form-check-label" for="inlineRadio2">4</label>
+						<input class="form-check-input" type="radio" name="naturarity" id="radio4" v-model="naturality" value="4">
+						<label class="form-check-label" for="radio4">4</label>
 					</div>
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="naturarity" v-model="naturality" value="5">
-						<label class="form-check-label" for="inlineRadio2">5</label>
+						<input class="form-check-input" type="radio" name="naturarity" id="radio5" v-model="naturality" value="5">
+						<label class="form-check-label" for="radio5">5</label>
 					</div>
-					ธรรมชาติ
-					<button class="btn btn-primary my-2 mx-4" style="font-size: 1.3em;" onclick="push_answer();">Next</button>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="radio" name="naturarity" id="radio6" v-model="naturality" value="6">
+						<label class="form-check-label" for="radio6">6</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="radio" name="naturarity" id="radio7" v-model="naturality" value="7">
+						<label class="form-check-label" for="radio7">7</label>
+					</div>
+					<span class="badge badge-primary" style="font-size: 1.2em;">ธรรมชาติ</span>
+					<button class="btn btn-dark my-2 mx-4" style="font-size: 1.3em;" onclick="push_answer();">Next</button>
 				</div>
 			</div>
 		</div>
@@ -134,7 +142,8 @@
 			age: '',
 			gender: '',
 			naturality: '',
-			answers: []
+			answers: [],
+			time_record: [] // num of problems + 1 
 		},
 		method: {
 
@@ -150,17 +159,24 @@
 			$('#modal_input').modal('hide');
 			vue.show_start_button = false;
 			vue.show_testform = true;
+			vue.time_record.push(get_time_now())
 		}
 	}
 
-	function push_answer(value){	
+	function push_answer(value){
+		vue.answers.push(vue.naturality);
+		vue.naturality = '';
+		vue.time_record.push(get_time_now())
 		if(vue.stimulus_no == vue.stimuli.length){
 			send_ajax();
 		}else{
 			vue.stimulus_no += 1;
-			vue.answers.push(vue.naturality);
-			vue.naturality = '';
 		}
+	}
+
+	function get_time_now(){
+		var now = new Date();
+		return now.getTime();
 	}
 
 	function send_ajax(){
@@ -170,7 +186,8 @@
 				"age": vue.age,
 				"gender": vue.gender,
 				"stimuli": vue.stimuli,
-				"answers": vue.answers
+				"answers": vue.answers,
+				"time_record": vue.time_record.map( (x,i,array) => (array[i+1]-x)/1000 ).slice(0, -1)
 			};
 		// send AJAX
 		$.ajax({
