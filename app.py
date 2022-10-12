@@ -40,7 +40,7 @@ def top_page():
         for sti, ans in zip(stimuli, answers):
             is_stimulus = sti in STIMULI.sentence.values
             RESULTS.loc[len(RESULTS)] = [now, id_, age, gender, sti, ans, is_stimulus]
-        RESULTS.to_csv('static/result2.csv', index=False)
+        RESULTS.to_csv('static/result.csv', index=False)
         RESULTS.to_json('static/result.json', orient='records')
 
         return jsonify({'status':'success'})
