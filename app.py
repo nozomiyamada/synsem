@@ -14,7 +14,7 @@ app = CustomFlask(__name__)
 
 STIMULI = pd.read_csv('data/stimuli_original.csv') ## id, sentence
 FILLERS = pd.read_csv('data/fillers.csv') ## id, filler
-RESULTS = pd.read_csv('static/result2.csv') ## date, name, age, gender, stimulus, is_filler, naturality
+RESULTS = pd.read_csv('static/result.csv') ## date, name, age, gender, stimulus, is_filler, naturality
 
 ###########################################################
 
