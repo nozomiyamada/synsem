@@ -34,7 +34,7 @@ def top_page():
     elif request.method == 'POST':
         ### record result
         now = str(datetime.datetime.today()).split('.')[0]
-        id_ = request.form['id']
+        userid = request.form['id']
         age = request.form['age']
         gender = request.form['gender']
         stimuli = request.form.getlist('stimuli[]')
@@ -43,7 +43,7 @@ def top_page():
         ## RESULTS : date,name,age,gender,stimulus,naturality,is_stimulus
         for sti, ans, tm in zip(stimuli, answers, time_record):
             is_stimulus = sti in STIMULI.sentence.values
-            RESULTS.loc[len(RESULTS)] = [now, id_, age, gender, sti, ans, is_stimulus, tm]
+            RESULTS.loc[len(RESULTS)] = [now, userid, age, gender, sti, ans, is_stimulus, tm]
         RESULTS.to_csv('static/result.csv', index=False)
         RESULTS.to_json('static/result.json', orient='records')
 

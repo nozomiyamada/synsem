@@ -43,14 +43,14 @@
 				</tr>
 
 				<tr v-for="row in result" v-if="show_only_stimuli==false">
-					<th>{{row[0]}}</th>
-					<th>{{row[1]}}</th>
-					<th>{{row[2]}}</th>
-					<th>{{row[3]}}</th>
-					<th>{{row[4]}}</th>
-					<th>{{row[5]}}</th>
-					<th>{{row[6]}}</th>
-					<th>{{row[7]}}</th>
+					<th :class="{'table-info':row[6]}">{{row[0]}}</th>
+					<th :class="{'table-info':row[6]}">{{row[1]}}</th>
+					<th :class="{'table-info':row[6]}">{{row[2]}}</th>
+					<th :class="{'table-info':row[6]}">{{row[3]}}</th>
+					<th :class="{'table-info':row[6]}">{{row[4]}}</th>
+					<th :class="{'table-info':row[6]}">{{row[5]}}</th>
+					<th :class="{'table-info':row[6]}">{{row[6]}}</th>
+					<th :class="{'table-info':row[6]}">{{row[7]}}</th>
 				</tr>
 				
 			</table>

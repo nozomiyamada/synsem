@@ -125,7 +125,7 @@
 				</div>
 			</div>
 		</div>
-
+		
 	</section>
 </main>
 
@@ -159,11 +159,18 @@
 			$('#modal_input').modal('hide');
 			vue.show_start_button = false;
 			vue.show_testform = true;
-			vue.time_record.push(get_time_now())
+			vue.time_record.push(get_time_now());
+			start_timer();
 		}
 	}
 
+	// push next button -> set next question or send ajax
 	function push_answer(value){
+		document.activeElement.blur();
+		if(vue.naturality == ''){
+			window.alert('เลือก 1-7');
+			return false;
+		}
 		vue.answers.push(vue.naturality);
 		vue.naturality = '';
 		vue.time_record.push(get_time_now())
@@ -203,7 +210,7 @@
 		}).fail(function(){ // when fail to connect 
 			location.reload();
 		});
-	}
+	}	
 </script>
 
 {% endblock %}
