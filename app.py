@@ -45,6 +45,7 @@ def top_page():
             RESULTS.loc[len(RESULTS)] = [now, userid, age, gender, sti, ans, is_stimulus, tm]
         RESULTS.to_csv('static/result.csv', index=False)
         RESULTS.to_json('static/result.json', orient='records')
+        latin_square = (latin_square + 1) % 5
 
         return jsonify({'status':'success'})
 
