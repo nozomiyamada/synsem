@@ -16,13 +16,11 @@ STIMULI = pd.read_csv('data/stimuli_original.csv') ## id, sentence, is_high_rate
 FILLERS = pd.read_csv('data/fillers.csv') ## id, sentence,i s_acceptable
 RESULTS = pd.read_csv('static/result.csv') ## date, name, age, gender, stimulus, is_filler, naturality
 
-latin_square = 0 # 0, 1, 2, 3, 4 : 4 stimuli for each experiment
-
 ###########################################################
 
 @app.route("/", methods=['GET', 'POST'])
 def top_page():
-    global latin_square
+    latin_square = len(RESULTS) // 15 % 5
     ### TOP PAGE ###
     if request.method == 'GET':
         selected_stimuli = STIMULI[STIMULI.id % 5 == latin_square]
@@ -45,7 +43,6 @@ def top_page():
             RESULTS.loc[len(RESULTS)] = [now, userid, age, gender, sti, ans, is_stimulus, tm]
         RESULTS.to_csv('static/result.csv', index=False)
         RESULTS.to_json('static/result.json', orient='records')
-        latin_square = (latin_square + 1) % 5
 
         return jsonify({'status':'success'})
 
