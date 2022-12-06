@@ -14,7 +14,7 @@
 				2. ใส่ข้อมูล: ชื่อ อายุ เพศ<br>
 				3. ประโยคภาษาไทยจะแสดงด้านล่าง<br>
 				4. ให้เลือกความธรรมชาติ (1-7) ของประโยคนั้น <br> 
-				5. มีทั้งหมด 10 ข้อ
+				5. มีทั้งหมด 15 ข้อ
 			</p>
 			<!-- START BUTTON -->
 			<button class="btn btn-primary mb-2" style="width: 80%; height:60px; font-size: 1.3em;" v-show="show_start_button" data-toggle="modal" data-target="#modal_input">
@@ -36,7 +36,7 @@
 						<div class="modal-body">
 							<div class="input-group mb-2">
 								<div class="input-group-prepend">
-									<span class="input-group-text">รหัส</span>
+									<span class="input-group-text">ชื่อเล่น</span>
 								</div>
 								<input type="text" class="form-control" v-model="id" required>
 							</div>
@@ -67,8 +67,8 @@
 								</select>
 							</div>
 							<p>
-								***consent form***<br>
-								<br>
+								ข้อมูลเหล่านี้ ใช้เพื่อการวิจัยเท่านั้น<br>
+								ขอขอบคุณต่อความช่วยเหลือ
 							</p>
 						</div>
 						<div class="modal-footer">

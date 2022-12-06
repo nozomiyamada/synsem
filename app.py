@@ -12,9 +12,11 @@ class CustomFlask(Flask):
 
 app = CustomFlask(__name__)
 
-STIMULI = pd.read_csv('data/stimuli_original.csv') ## id, sentence
-FILLERS = pd.read_csv('data/fillers.csv') ## id, filler
+STIMULI = pd.read_csv('data/stimuli_original.csv') ## id, sentence, is_high_rate
+FILLERS = pd.read_csv('data/fillers.csv') ## id, sentence,i s_acceptable
 RESULTS = pd.read_csv('static/result.csv') ## date, name, age, gender, stimulus, is_filler, naturality
+
+latin_square = 0 # 0, 1, 2, 3, 4 : 4 stimuli for each experiment
 
 ###########################################################
 
@@ -23,12 +25,9 @@ def top_page():
     
     ### TOP PAGE ###
     if request.method == 'GET':
-        selected_stimuli_1 = STIMULI[STIMULI.pattern == 1].sample(2)
-        selected_stimuli_2 = STIMULI[STIMULI.pattern == 2].sample(2)
-        selected_stimuli_3 = STIMULI[STIMULI.pattern == 3].sample(2)
-        selected_fillers = FILLERS.sample(4)
-        stimuli = pd.concat([selected_stimuli_1, selected_stimuli_2, selected_stimuli_3])[['id', 'sentence']]
-        stimuli = pd.concat([stimuli, selected_fillers]).sample(frac=1)['sentence'].to_list()
+        selected_stimuli = STIMULI[STIMULI.id % 5 == latin_square]
+        selected_fillers = FILLERS.sample(11)
+        stimuli = pd.concat([selected_stimuli, selected_fillers]).sample(frac=1)['sentence'].to_list()
         return render_template('testpage.html', stimuli=stimuli)
     ### receive ajax json
     elif request.method == 'POST':
