@@ -22,7 +22,7 @@ latin_square = 0 # 0, 1, 2, 3, 4 : 4 stimuli for each experiment
 
 @app.route("/", methods=['GET', 'POST'])
 def top_page():
-    
+    global latin_square
     ### TOP PAGE ###
     if request.method == 'GET':
         selected_stimuli = STIMULI[STIMULI.id % 5 == latin_square]
