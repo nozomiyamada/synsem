@@ -14,12 +14,13 @@ app = CustomFlask(__name__)
 
 STIMULI = pd.read_csv('data/stimuli_original.csv') ## id, sentence, is_high_rate
 FILLERS = pd.read_csv('data/fillers.csv') ## id, sentence,i s_acceptable
-RESULTS = pd.read_csv('static/result.csv') ## date, name, age, gender, stimulus, is_filler, naturality
+#RESULTS = pd.read_csv('static/result.csv') ## date, name, age, gender, stimulus, is_filler, naturality
 
 ###########################################################
 
 @app.route("/", methods=['GET', 'POST'])
 def top_page():
+    RESULTS = pd.read_csv('static/result.csv') ## date, name, age, gender, stimulus, is_filler, naturality
     latin_square = len(RESULTS) // 15 % 5
     ### TOP PAGE ###
     if request.method == 'GET':
@@ -48,6 +49,7 @@ def top_page():
 
 @app.route("/admin", methods=['GET', 'POST'])
 def admin_page():
+    RESULTS = pd.read_csv('static/result.csv') ## date, name, age, gender, stimulus, is_filler, naturality
     return render_template('adminpage.html', result=RESULTS.values.tolist())
 
 
